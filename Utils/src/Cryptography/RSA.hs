@@ -2,15 +2,17 @@
 
 module Cryptography.RSA
 ( SecretKey(..), OpenKey(..)
-, generateKeys
+, generateRandomKeys, generateKeys
 , encryptNumber, decryptNumber
-, encrypt, decrypt, encryptAndDecrypt
+, encrypt, decrypt
 ) where
 
-import Data.Numbers.Primes
 import Data.List
 import Data.Maybe
 import Data.Char
+import Cryptography.RSA.Random
+import Math.NumberTheory.Primes
+import System.Random (RandomGen)
 
 data SecretKey = SecretKey { secretD :: Integer, secretN :: Integer } deriving (Show)
 
@@ -18,6 +20,11 @@ data OpenKey = OpenKey { openE :: Integer, openN :: Integer } deriving (Show)
 
 isCoprime :: Integral a => a -> a -> Bool
 isCoprime a b = gcd a b == 1
+
+generateRandomKeys :: RandomGen g => Int -> g -> ((SecretKey, OpenKey), g)
+generateRandomKeys bitsCount p1Gen = let (p1, p2Gen)     = randomPrime bitsCount p1Gen
+                                         (p2, resultGen) = randomPrime bitsCount p2Gen
+                                     in (generateKeys p1 p2, resultGen)
 
 generateKeys :: Integer -> Integer -> (SecretKey, OpenKey)
 generateKeys p1 p2 = (SecretKey d n, OpenKey e n)

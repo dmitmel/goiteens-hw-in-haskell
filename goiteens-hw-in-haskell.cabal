@@ -23,10 +23,11 @@ library
                      , Cryptography.CaesarCipher.BruteBreaker
                      , Cryptography.VigenereCipher
                      , Cryptography.RSA
-  -- other-modules:
+  other-modules:       Cryptography.RSA.Random
   -- other-extensions:
   build-depends:       base
-                     , primes
+                     , random
+                     , arithmoi
   hs-source-dirs:      Utils/src
   default-language:    Haskell2010
   ghc-options:         -Wall
