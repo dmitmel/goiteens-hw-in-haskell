@@ -1,12 +1,11 @@
 module Cryptography
 ( Alphabet(..), english, russian
-, alphabetOrd, alphabetChr, alphabetLength
+, alphabetOrd, alphabetIgnoreCaseOrd, alphabetChr, alphabetLength
 , alphabetElem, notAlphabetElem
 , isLowercase, isUppercase
 , shiftChar, shift
 ) where
 
-import Data.Char
 import Data.List
 import Data.Maybe
 
@@ -27,12 +26,20 @@ alphabetOrd alphabet c
     where lower = lowercase alphabet
           upper = uppercase alphabet
 
+alphabetIgnoreCaseOrd :: Alphabet -> Char -> Int
+alphabetIgnoreCaseOrd alphabet c
+    | alphabet `isLowercase` c = fromMaybe (error $ "Cryptography.alphabetOrd: " ++ show c ++ " is not in alphabet") $ elemIndex c lower
+    | alphabet `isUppercase` c = fromMaybe (error $ "Cryptography.alphabetOrd: " ++ show c ++ " is not in alphabet") $ elemIndex c upper
+    | otherwise                = error $ "Cryptography.alphabetOrd: " ++ show c ++ " is not in alphabet"
+    where lower = lowercase alphabet
+          upper = uppercase alphabet
+
 alphabetChr :: Alphabet -> Int -> Char
 alphabetChr (Alphabet lower upper) i
-    | i < 0                                    = error $ "Cryptography.alphabetChr: bad argument: (" ++ show i ++ ")"
+    | i < 0                                    = error $ "Cryptography.alphabetChr: index (" ++ show i ++ ") is too small"
     | i >= 0        && i < lowerLen            = lower !! i
     | i >= lowerLen && i < lowerLen + upperLen = upper !! (i - lowerLen)
-    | otherwise                                = error $ "Cryptography.alphabetChr: bad argument: " ++ show i
+    | otherwise                                = error $ "Cryptography.alphabetChr: index (" ++ show i ++ ") is too large"
     where lowerLen = length lower
           upperLen = length upper
 
@@ -57,10 +64,13 @@ isUppercase :: Alphabet -> Char -> Bool
 isUppercase (Alphabet _ upper) c = c `elem` upper
 
 shiftChar :: Int -> Alphabet -> Char -> Char
+shiftChar 0 _ c = c
 shiftChar s alphabet c
-    | alphabet `isLowercase` c = let lower = lowercase alphabet in chr (((s + ord c - ord (head lower)) `mod` length lower) + ord (head lower))
-    | alphabet `isUppercase` c = let upper = uppercase alphabet in chr (((s + ord c - ord (head upper)) `mod` length upper) + ord (head upper))
+    | alphabet `isLowercase` c = let lower = lowercase alphabet in lower !! (((alphabet `alphabetIgnoreCaseOrd` c) + s) `mod` length lower)
+    | alphabet `isUppercase` c = let upper = uppercase alphabet in upper !! (((alphabet `alphabetIgnoreCaseOrd` c) + s) `mod` length upper)
     | otherwise                = error $ "Cryptography.shiftChar: " ++ show c ++ " is not in alphabet"
 
 shift :: Int -> Alphabet -> String -> String
-shift s alphabet = map (\c -> if c `notAlphabetElem` alphabet then c else shiftChar s alphabet c)
+shift 0 _ str        = str
+shift _ _ ""         = ""
+shift s alphabet str = map (\c -> if c `notAlphabetElem` alphabet then c else shiftChar s alphabet c) str
