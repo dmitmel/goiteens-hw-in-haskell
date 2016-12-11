@@ -10,7 +10,7 @@ import Data.List
 import Data.Maybe
 
 data Alphabet = Alphabet { lowercase :: String
-                         , uppercase :: String }
+                         , uppercase :: String } deriving (Show)
 
 english :: Alphabet
 english = Alphabet ['a'..'z'] ['A'..'Z']
