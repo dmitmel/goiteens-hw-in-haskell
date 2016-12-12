@@ -3,9 +3,10 @@ module Main where
 import System.Environment
 import Data.Char
 
+main :: IO ()
 main = do
     (inputCapacityStr:outputCapacityStr:input:_) <- getArgs
-    let inputCapacity = read inputCapacityStr :: Int
+    let inputCapacity  = read inputCapacityStr :: Int
         outputCapacity = read outputCapacityStr :: Int
     print (toDecimal inputCapacity input)
 

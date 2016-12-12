@@ -1,9 +1,9 @@
-module GuessTheNumber(main) where
+module Main where
 
-import System.IO
 import System.Random
 import Utils.IO
 
+main :: IO ()
 main = do
     name <- prompt "Hello! What's your name?\n>>> "
     putStrLn ("Hello, " ++ name ++ "!\n")
@@ -15,8 +15,11 @@ main = do
 
     guessTheNumber randomNumber name attemptCount
 
+minRandomNumber :: Int
 minRandomNumber = 1
+maxRandomNumber :: Int
 maxRandomNumber = 10
+attemptCount :: Int
 attemptCount = 3
 
 guessTheNumber :: Int -> String -> Int -> IO ()
