@@ -7,11 +7,11 @@ module Cryptography.RSA
 , encrypt, decrypt
 ) where
 
-import Data.List
-import Data.Maybe
+-- import Data.List
+-- import Data.Maybe
 import Data.Char
 import Cryptography.RSA.Random
-import Math.NumberTheory.Primes
+import Math.NumberTheory.Primes (primes)
 import System.Random (RandomGen)
 
 data SecretKey = SecretKey { secretD :: Integer, secretN :: Integer } deriving (Show)
@@ -32,7 +32,23 @@ generateKeys p1 p2 = (SecretKey d n, OpenKey e n)
         n   = p1 * p2
         phi = (p1 - 1) * (p2 - 1)
         e   = head $ filter (isCoprime phi) $ takeWhile (< phi) primes
-        d   = fromJust $ find (\d_ -> (e * d_) `mod` phi == 1) [1..]
+        -- d   = fromJust $ find (\d_ -> (e * d_) `mod` phi == 1) [1..]
+        d   = modularInverse e phi
+
+modularInverse :: Integer -> Integer -> Integer
+modularInverse e phi = x `mod` phi
+    where (_, x, _) = extendedEuclidean e phi
+
+extendedEuclidean :: Integer -> Integer -> (Integer, Integer, Integer)
+extendedEuclidean a b
+    | d < 0     = (-d, -x, -y)
+    | otherwise = (d, x, y)
+    where (d, x, y) = egcd a b
+
+egcd :: Integer -> Integer -> (Integer, Integer, Integer)
+egcd 0 b = (b, 0, 1)
+egcd a b = let (g, y, x) = egcd (b `mod` a) a
+           in (g, x - ((b `div` a) * y), y)
 
 encryptNumber :: OpenKey -> Integer -> Integer
 encryptNumber (OpenKey e n) num = (num ^ e) `mod` n
