@@ -3,8 +3,8 @@ module Cryptography.CaesarCipher.BruteBreaker
 , bruteBreakIO
 ) where
 
-import Cryptography
-import Cryptography.CaesarCipher
+import           Cryptography
+import           Cryptography.CaesarCipher
 
 bruteBreak :: Alphabet -> String -> [(Int, String)]
 bruteBreak alphabet str = zip allPossibleKeys (map (\s -> decode s alphabet str) allPossibleKeys)

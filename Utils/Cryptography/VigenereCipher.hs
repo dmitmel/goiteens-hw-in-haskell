@@ -2,7 +2,7 @@ module Cryptography.VigenereCipher
 ( encode, decode
 ) where
 
-import Cryptography
+import           Cryptography
 
 encode :: String -> Alphabet -> String -> String
 encode passphrase alphabet str = map (\(c, s) -> shiftChar s alphabet c) $ zipWithShifts alphabet str $ passphraseShifts alphabet passphrase

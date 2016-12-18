@@ -6,8 +6,8 @@ module Cryptography
 , shiftChar, shift
 ) where
 
-import Data.List
-import Data.Maybe
+import           Data.List
+import           Data.Maybe
 
 data Alphabet = Alphabet { lowercase :: String
                          , uppercase :: String } deriving (Show)

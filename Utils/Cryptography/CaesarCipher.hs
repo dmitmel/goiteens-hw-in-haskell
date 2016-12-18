@@ -3,7 +3,7 @@ module Cryptography.CaesarCipher
 , encodeROT13, decodeROT13
 ) where
 
-import Cryptography
+import           Cryptography
 
 encode :: Int -> Alphabet -> String -> String
 encode = shift

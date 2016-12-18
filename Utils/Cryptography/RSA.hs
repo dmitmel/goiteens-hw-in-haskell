@@ -1,5 +1,3 @@
-{-# LANGUAGE FlexibleInstances, UndecidableInstances #-}
-
 module Cryptography.RSA
 ( SecretKey(..), OpenKey(..)
 , generateRandomKeys, generateKeys
@@ -7,11 +5,11 @@ module Cryptography.RSA
 , encrypt, decrypt
 ) where
 
-import Data.Char
-import Cryptography.RSA.Random
-import Math.NumberTheory.Primes (primes)
-import Math.NumberTheory.Moduli (powerMod)
-import System.Random (RandomGen)
+import           Cryptography.RSA.Random
+import           Data.Char
+import           Math.NumberTheory.Moduli (powerMod)
+import           Math.NumberTheory.Primes (primes)
+import           System.Random            (RandomGen)
 
 data SecretKey = SecretKey { secretD :: Integer, secretN :: Integer } deriving (Show)
 

@@ -1,7 +1,7 @@
 module Cryptography.RSA.Random where
 
-import System.Random
-import Math.NumberTheory.Primes
+import           Math.NumberTheory.Primes
+import           System.Random
 
 randomWithBits :: RandomGen g => Int -> g -> (Integer, g)
 randomWithBits 0 _       = error "Cryptography.RSA.Random.randomWithBits: bits count is too small (0)"
