@@ -1,8 +1,9 @@
 module Main where
 
-import           Data.Char           (isSpace)
-import           Data.List           (intercalate)
-import           Data.List.Split     (splitOn)
+import           Data.Char             (isSpace)
+import           Data.List             (intercalate)
+import           Data.List.Split       (splitOn)
+import           Data.Monoid           ((<>))
 import           Options.Applicative
 import           Sorters.BubbleSort
 import           Sorters.InsertSort
@@ -27,7 +28,7 @@ sortersOptions = SortersOptions
        <> metavar "ALGORITHM"
        <> showDefault
        <> value "merge"
-       <> help "Sorting algorithm. Can be one of: bubble, insert, merge, quick." )
+       <> help "Sorting algorithm. Can be one of: bubble, insert, merge, quick, selection." )
     <*> switch
         ( short 'f'
        <> long "read-file-lines"
@@ -120,8 +121,9 @@ getStringSorter options
         sorter = getSorter $ algorithm options
 
 getSorter :: Ord a => String -> [a] -> [a]
-getSorter "bubble" = bubbleSort
-getSorter "insert" = insertSort
-getSorter "merge"  = mergeSort
-getSorter "quick"  = quickSort
-getSorter algo     = error $ "Unknown algorithm: " ++ algo
+getSorter "bubble"   = bubbleSort
+getSorter "insert"   = insertSort
+getSorter "merge"    = mergeSort
+getSorter "quick"    = quickSort
+getSorter "selecion" = selectionSort
+getSorter algo       = error $ "Unknown algorithm: " ++ algo

@@ -1,4 +1,4 @@
-module Sorters.SelectionSort where
+module Sorters.SelectionSort (selectionSort) where
 
 selectionSort :: Ord a => [a] -> [a]
 selectionSort = doSelectionSort []
