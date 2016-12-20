@@ -82,4 +82,3 @@ executable sorters-benchmark
     hs-source-dirs:      sorters-benchmark
     default-language:    Haskell2010
     ghc-options:         -Wall
-    build-tools:         cpphs
