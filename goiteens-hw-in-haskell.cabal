@@ -26,6 +26,10 @@ library
                        , Cryptography.VigenereCipher
                        , Cryptography.RSA
                        , Cryptography.AES
+                       , Math.MoreMath
+                       , Math.MoreMath.BigInt
+                       , Math.MoreMath.Fraction
+                       , Math.MoreMath.Color
                        , Sorters.BubbleSort
                        , Sorters.InsertSort
                        , Sorters.MergeSort
