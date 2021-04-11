@@ -4,17 +4,20 @@ import           Data.List       (find)
 import           Data.List.Utils
 import           Data.Maybe      (fromJust)
 
-data Table a = Table { rows :: Int, cols :: Int, grid :: [[a]] } deriving (Show)
+data Table a = Table { rows :: Int, cols :: Int, grid :: [[a]] } deriving (Show, Eq, Ord, Read)
 
 instance Functor Table where
     fmap f (Table rows_ cols_ grid_) = Table rows_ cols_ $ map (map f) grid_
 
+instance Foldable Table where
+    foldMap f (Table _ _ grid) = foldMap (foldMap f) grid
+
 (#-+) :: Table a -> (Int, a) -> Table a
-table                     #-+ (0,       _)   = table
+table                     #-+ (0,       _  ) = table
 (Table rows_ cols_ grid_) #-+ (newRows, def) = Table (rows_ + newRows) cols_ $ grid_ ++ replicate newRows (replicate cols_ def)
 
 (#|+) :: Table a -> (Int, a) -> Table a
-table                     #|+ (0,       _)   = table
+table                     #|+ (0,       _  ) = table
 (Table rows_ cols_ grid_) #|+ (newCols, def) = Table rows_ (cols_ + newCols) $ map (\row -> row ++ replicate newCols def) grid_
 
 tableToRows :: Table a -> [[a]]

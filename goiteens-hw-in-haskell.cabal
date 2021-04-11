@@ -17,7 +17,8 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-    exposed-modules:     Data.Table
+    exposed-modules:     Data.BinaryTree
+                       , Data.Table
                        , Data.List.Utils
                        , Utils.IO
                        , Cryptography
